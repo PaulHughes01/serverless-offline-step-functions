@@ -131,19 +131,19 @@ class ChoiceProcessor {
             case 'NumericGreaterThan':
             case 'StringGreaterThan':
             case 'TimestampGreaterThan':
-                return this.checkGT(choiceValue, inputValue);
+                return this.checkGT(choice, inputValue);
             case 'NumericGreaterThanEquals':
             case 'StringGreaterThanEquals':
             case 'TimestampGreaterThanEquals':
-                return this.checkGTE(choiceValue, inputValue);
+                return this.checkGTE(choice, inputValue);
             case 'NumericLessThan':
             case 'StringLessThan':
             case 'TimestampLessThan':
-                return this.checkLT(choiceValue, inputValue);
+                return this.checkLT(choice, inputValue);
             case 'NumericLessThanEquals':
             case 'StringLessThanEquals':
             case 'TimestampLessThanEquals':
-                return this.checkLTE(choiceValue, inputValue);
+                return this.checkLTE(choice, inputValue);
             case 'Not':
                 const name = _.filter(keys, key => key !== 'Variable' && key !== 'Next');
                 return !this.processChoice(name, choice, data);
