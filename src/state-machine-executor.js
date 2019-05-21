@@ -46,6 +46,7 @@ class StateMachineExecutor {
         const outputKey = `sf-${Date.now()}`;
 
         const taskInput = this.processTaskInputPath(input, stateInfo);
+        console.log('Task Input:', taskInput);
 
         const child = child_process.spawn('node',
         [
@@ -218,12 +219,11 @@ class StateMachineExecutor {
      * @param {*} stateInfo
      */
     processTaskInputPath(input, stateInfo) {
-        stateInfo.InputPath = typeof stateInfo.InputPath === 'undefined' ? '$..*' : stateInfo.InputPath;
         if (stateInfo.InputPath === null) {
             input = {};
         } else {
             input = input ? input : {};
-            const data = jsonpath.query(input, stateInfo.InputPath)[0];
+            const data = typeof stateInfo.InputPath === 'undefined' ? input : jsonpath.query(input, stateInfo.InputPath)[0];
             input = Object.assign({}, data);
         }
 
