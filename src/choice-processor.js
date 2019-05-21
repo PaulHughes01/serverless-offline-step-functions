@@ -37,7 +37,9 @@ class ChoiceProcessor {
             let choiceComparator = '';
             if (choice.Not) {
                 choiceComparator = 'Not';
+                const next = choice.Next;
                 choice = choice.Not;
+                choice.Next = next;
             } else if (choice.And) {
                 if (this.evaluateAnd(choice.And) === true) {
                     nextState = choice.Next;
@@ -56,13 +58,12 @@ class ChoiceProcessor {
                 }
 
                 choiceComparator = choiceComparator[0];
-
-                if (this.evaluateChoice(choiceComparator, choice, input)) {
-                    nextState = choice.Next;
-                    return false; // short circuit forEach
-                }
             }
 
+            if (this.evaluateChoice(choiceComparator, choice, input)) {
+                nextState = choice.Next;
+                return false; // short circuit forEach
+            }
 
         });
 
@@ -145,8 +146,9 @@ class ChoiceProcessor {
             case 'TimestampLessThanEquals':
                 return this.checkLTE(choice, inputValue);
             case 'Not':
+                const keys = Object.keys(choice);
                 const name = _.filter(keys, key => key !== 'Variable' && key !== 'Next');
-                return !this.processChoice(name, choice, data);
+                return !this.evaluateChoice(name[0], choice, data);
         }
     }
 
